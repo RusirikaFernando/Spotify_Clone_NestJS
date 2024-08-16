@@ -3,6 +3,7 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Inject, Param
 import { SongsService } from './songs.service';
 import { CreateSongDTO } from './dto/create-song-dto';
 import { Connection } from 'src/common/constants/connection';
+import { Song } from './songs.entity';
 
 @Controller({path: "songs",
     scope: Scope.REQUEST}
@@ -14,44 +15,50 @@ constructor(private songsService: SongsService,
 ) {
     console.log(`THIS IS CONNECTION STRING  ${this.connection.CONNECTION_STRING}`);
 }
+    // @Post()
+    // create(@Body() createSongDTO: CreateSongDTO){
+    //     return this.songsService.create(createSongDTO);
+    // }
+
     @Post()
-    create(@Body() createSongDTO: CreateSongDTO){
-        return this.songsService.create(createSongDTO);
-    }
+create(@Body() createSongDTO: CreateSongDTO): Promise<Song> {
+return this.songsService.create(createSongDTO);
+}
 
-    @Get()
-    findAll(){
-        try {
-            return this.songsService.findAll();
-            }
-            catch (e) {
-            throw new HttpException(
-            'server error',
-            HttpStatus.INTERNAL_SERVER_ERROR,{ cause: e },
-            );
-            }
-    }
 
-    @Get(':id')
-    findOne(
-        @Param(
-            'id',
-            new ParseIntPipe({
-                errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE,
-            }),
-        )
-        id: number,
-    ){
-        return `fetch song based on the id ${id}`;
-    }
+    // @Get()
+    // findAll(){
+    //     try {
+    //         return this.songsService.findAll();
+    //         }
+    //         catch (e) {
+    //         throw new HttpException(
+    //         'server error',
+    //         HttpStatus.INTERNAL_SERVER_ERROR,{ cause: e },
+    //         );
+    //         }
+    // }
 
-    @Put(':id')
-    update(){
-        return 'update song based on the id';
-    }
+    // @Get(':id')
+    // findOne(
+    //     @Param(
+    //         'id',
+    //         new ParseIntPipe({
+    //             errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE,
+    //         }),
+    //     )
+    //     id: number,
+    // ){
+    //     return `fetch song based on the id ${id}`;
+    // }
 
-    @Delete(':id')
-    delete(){
-        return 'delete song based on the id';
-    }
+    // @Put(':id')
+    // update(){
+    //     return 'update song based on the id';
+    // }
+
+    // @Delete(':id')
+    // delete(){
+    //     return 'delete song based on the id';
+    // }
 }
